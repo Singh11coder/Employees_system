@@ -24,11 +24,13 @@ const App = () => {
   const handleCreateUser = (newUser) => {
   const employee = {
     ...newUser,
-    id: Math.max(0, ...data.map((emp) => emp.id)) + 1
+    id: Math.max(0, ...data.map((emp) => emp.id)) + 1,
   };
 
   setData((prev) => [...prev, employee]);
   setViewData(employee);
+
+  setShowModal(false);
 };
 
   const handleDescription = (id) => {
@@ -41,7 +43,10 @@ const App = () => {
 
       {/* Navbar */}
 
-      <header className="bg-white border-b border-slate-200 px-6 md:px-10 py-5">
+      {!showModal 
+       ?
+        <div >
+           <header className="bg-white border-b border-slate-200 px-6 md:px-10 py-5">
         <div className="flex justify-between items-center">
 
           <div className="flex items-center gap-3">
@@ -61,11 +66,11 @@ const App = () => {
 
           <div className="hidden sm:block">
             <button
-  onClick={() => setShowModal(true)}
-  className="bg-indigo-50 text-indigo-600 px-5 py-3 rounded-xl font-semibold hover:bg-indigo-100 transition"
->
-  + Create User
-</button>
+             onClick={() => setShowModal(true)}
+             className="bg-indigo-50 text-indigo-600 px-5 py-3 rounded-xl font-semibold hover:bg-indigo-100 transition"
+            >
+            + Create User
+            </button>
           </div>
 
         </div>
@@ -352,11 +357,19 @@ const App = () => {
               </div>
             )}
 
-          </section>
+           </section>
 
+          </div>
+
+         </main>
         </div>
-
-      </main>
+     
+       :
+        <div>
+           <CreateUser onSubmit={handleCreateUser}/>
+        </div>
+      }
+        
     </div>
   );
 };

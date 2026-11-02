@@ -1,18 +1,18 @@
 
 import React, { useState } from "react";
 
-const CreateUser = ({ onClose, onCreate }) => {
-
+const CreateUser = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    image: "",
     department: "",
     designation: "",
     salary: "",
     joiningDate: "",
     status: "Active",
-    image: ""
+    message: 0,
   });
 
   const handleChange = (e) => {
@@ -20,197 +20,138 @@ const CreateUser = ({ onClose, onCreate }) => {
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onCreate({
+    onSubmit({
       ...formData,
       salary: Number(formData.salary),
-      image: formData.image || "https://i.pravatar.cc/150?img=11"
+      message: Number(formData.message),
+      image: formData.image || "https://i.pravatar.cc/150?img=12",
     });
-
-    onClose();
   };
 
+  const inputStyle =
+    "w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100";
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <form onSubmit={handleSubmit} className="p-6">
 
-      <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+      <h2 className="text-xl font-bold mb-6">
+        Create New Employee
+      </h2>
 
-        {/* Header */}
-        <div className="flex justify-between items-center px-6 py-5 border-b">
-          <div>
-            <h2 className="text-xl font-bold text-slate-800">
-              Create Employee
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">
-              Enter employee information
-            </p>
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
-          <button
-            onClick={onClose}
-            type="button"
-            className="text-2xl text-slate-400 hover:text-red-500"
-          >
-            &times;
-          </button>
-        </div>
+        <input
+          className={inputStyle}
+          name="name"
+          placeholder="Full Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6">
+        <input
+          className={inputStyle}
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input
+          className={inputStyle}
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          value={formData.phone}
+          onChange={handleChange}
+          pattern="[0-9]{10}"
+          maxLength={10}
+          required
+        />
 
-            <div>
-              <label className="text-sm font-medium">Full Name</label>
-              <input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                placeholder="Enter name"
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
+        <input
+          className={inputStyle}
+          type="url"
+          name="image"
+          placeholder="Profile Image URL"
+          value={formData.image}
+          onChange={handleChange}
+        />
 
-            <div>
-              <label className="text-sm font-medium">Email</label>
-              <input
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="Enter email"
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
+        <select
+          className={inputStyle}
+          name="department"
+          value={formData.department}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Department</option>
+          <option value="Engineering">Engineering</option>
+          <option value="HR">HR</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Finance">Finance</option>
+          <option value="Design">Design</option>
+        </select>
 
-            <div>
-              <label className="text-sm font-medium">Phone</label>
-              <input
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                placeholder="Phone number"
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
+        <input
+          className={inputStyle}
+          name="designation"
+          placeholder="Designation"
+          value={formData.designation}
+          onChange={handleChange}
+          required
+        />
 
-            <div>
-              <label className="text-sm font-medium">Department</label>
-              <select
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                required
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              >
-                <option value="">Select Department</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Finance">Finance</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Sales">Sales</option>
-                <option value="Human Resources">Human Resources</option>
-                <option value="Operations">Operations</option>
-                <option value="Design">Design</option>
-              </select>
-            </div>
+        <input
+          className={inputStyle}
+          type="number"
+          name="salary"
+          placeholder="Monthly Salary"
+          value={formData.salary}
+          onChange={handleChange}
+          min="0"
+          required
+        />
 
-            <div>
-              <label className="text-sm font-medium">Designation</label>
-              <input
-                name="designation"
-                value={formData.designation}
-                onChange={handleChange}
-                required
-                placeholder="Job designation"
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
+        <input
+          className={inputStyle}
+          type="date"
+          name="joiningDate"
+          value={formData.joiningDate}
+          onChange={handleChange}
+          required
+        />
 
-            <div>
-              <label className="text-sm font-medium">Salary (₹)</label>
-              <input
-                name="salary"
-                type="number"
-                min="0"
-                value={formData.salary}
-                onChange={handleChange}
-                required
-                placeholder="Enter salary"
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
+        <select
+          className={inputStyle}
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+        >
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="On Leave">On Leave</option>
+        </select>
 
-            <div>
-              <label className="text-sm font-medium">Joining Date</label>
-              <input
-                name="joiningDate"
-                type="date"
-                value={formData.joiningDate}
-                onChange={handleChange}
-                required
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium">Status</label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-                <option value="On Leave">On Leave</option>
-              </select>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label className="text-sm font-medium">Profile Image URL</label>
-              <input
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                placeholder="Enter image URL (optional)"
-                className="w-full mt-2 p-3 border rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-              />
-            </div>
-
-          </div>
-
-          {/* Actions */}
-          <div className="flex justify-end gap-3 mt-7">
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-5 py-2.5 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              className="px-5 py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700"
-            >
-              Create Employee
-            </button>
-
-          </div>
-
-        </form>
       </div>
-    </div>
+
+      <button
+        type="submit"
+        className="mt-6 w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition"
+      >
+        Create Employee
+      </button>
+
+    </form>
   );
 };
 
